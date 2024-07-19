@@ -36,6 +36,7 @@ Scoped.define("module:VideoPlayer.Dynamics.PlayerStates.State", [
         _started: function() {},
 
         play: function() {
+            console.log('this is play in state right?!?!')
             this.dyn.set("autoplay", true);
         },
 
@@ -758,6 +759,7 @@ Scoped.define("module:VideoPlayer.Dynamics.PlayerStates.LoadVideo", [
             this.listenOn(this.dyn, "error:video", function() {
                 this.next("ErrorVideo");
             }, this);
+
             if (this.dyn.get("autoseek")) {
                 this.listenOn(this.dyn, "playing", function() {
                     if (this.destroyed() || this.dyn.destroyed()) return;
@@ -1076,6 +1078,8 @@ Scoped.define("module:VideoPlayer.Dynamics.PlayerStates.NextVideo", [
             this.dyn.set("last-played-position", 0);
             this.dyn.set("currentstream", {});
             this.dyn.set("sources", []);
+            this.dyn.set("upload_date", []);
+            this.dyn.set("uploaddate", []);
         },
 
         /**

@@ -2123,19 +2123,27 @@ Scoped.define("module:VideoPlayer.Dynamics.Player", [
                     },
 
                     play: function() {
+                        console.log('we are calling play here')
                         this.setPlayerEngagement();
                         this.trigger("playrequested");
+
                         if (this._delegatedPlayer) {
+                            console.log("Delegated player is defined. Executing play on delegated player.");
                             this._delegatedPlayer.execute("play");
                             return;
                         }
+
                         if (this.player && this.get("broadcasting")) {
+                            console.log("Broadcasting is active. Triggering play on broadcasting player.");
                             this._broadcasting.player.trigger("play-google-cast");
                             return;
                         }
+
+                        console.log("Calling host.state().play()");
                         this.host.state().play();
                         this.set("manuallypaused", false);
                     },
+
 
                     rerecord: function() {
                         if (this._delegatedPlayer) {

@@ -8,6 +8,7 @@ Scoped.define("module:Ads.IMA.AdsManager", [
         scoped: scoped
     }, [EventsMixin, function(inherited) {
         return {
+            _duration: null,
 
             constructor: function(options) {
                 inherited.constructor.call(this, options);

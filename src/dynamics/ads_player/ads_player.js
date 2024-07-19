@@ -43,7 +43,7 @@ Scoped.define("module:Ads.Dynamics.Player", [
                     customclickthrough: false,
                     persistentcompanionad: false,
                     ads_loaded: false,
-                    ads_load_started: false
+                    ads_load_started: false,
                 },
 
                 events: {
@@ -132,6 +132,18 @@ Scoped.define("module:Ads.Dynamics.Player", [
                 },
 
                 channels: {
+                    "ads:adProgress": function(event, ad) {
+                        const adData = event.getAdData();
+                        if (adData && adData.currentTime && adData.duration) {
+                            const currentTime = adData.currentTime;
+                            const duration = adData.adBreakDuration;
+                            if (currentTime > duration) {
+                                this.adsManager.trigger('allAdsCompleted');
+                                this.adsManager.trigger('contentResumeRequested');
+
+                            }
+                        }
+                    },
                     "ads:ad-error": function() {
                         this.set(`adsplaying`, false);
                         this.set(`ads_loaded`, false);
@@ -260,7 +272,7 @@ Scoped.define("module:Ads.Dynamics.Player", [
                     this.adsManager = this.auto_destroy(
                         new AdsManager(adManagerOptions, dynamics));
                     this.adsManager.requestAds(this._baseRequestAdsOptions());
-                    // Will list events which are require some additional actions,
+                    // Will list events  ich are require some additional actions,
                     // ignore events like adsProgress for additional statement checks
                     this.adsManager.on("all", function(event, ad, ...rest) {
                         if (event === "adsManagerLoaded") {
